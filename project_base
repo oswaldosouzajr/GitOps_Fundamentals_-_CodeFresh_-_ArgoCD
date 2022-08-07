@@ -1,0 +1,261 @@
+echo "# GitOps_Fundamentals_-_CodeFresh_-_ArgoCD" >> README.md 
+git init 
+git add README.md 
+git commit -m "primeiro commit" 
+git branch -M main 
+git remote add origin https://github.com/oswaldosouzajr/GitOps_Fundamentals_- _CodeFresh_-_ArgoCD.git
+ git push -u origin main
+
+
+
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+argocd app create {APP NAME} \
+--project {PROJECT} \
+--repo {GIT REPO} \--path {APP FOLDER} \
+--dest-namespace {NAMESPACE} \
+--dest-server {SERVER URL}
+
+argocd app list
+argocd app get {APP NAME}
+
+argocd app sync {APP NAME}
+kubectl -n {NAMESPACE} get all
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  timeout.reconciliation: 240s
+  
+ hs = {}
+if obj.status ~= nil then
+    if obj.status.phase == "Pending" then
+        hs.status = "Progressing"
+        hs.message = "Experiment is pending"
+    end
+    if obj.status.phase == "Running" then
+        hs.status = "Progressing"
+        hs.message = "Experiment is running"
+    end
+    if obj.status.phase == "Successful" then
+        hs.status = "Healthy"
+        hs.message = "Experiment is successful"
+    end
+    if obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        hs.message = "Experiment has failed"
+    end
+    if obj.status.phase == "Error" then
+        hs.status = "Degraded"
+        hs.message = "Experiment had an error"
+    end
+    return hs
+end
+
+hs.status = "Progressing"
+hs.message = "Waiting for experiment to finish: status has not been reconciled."
+return hs
+
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm repo update
+helm install sealed-secrets-controller sealed-secrets/sealed-secrets
+
+kubeseal -n my-namespace <.db-creds.yml> db-creds.json
+
+kubectl apply -f db-creds.json -n my-namespace
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: canary-demo
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc' 
+    namespace: demo
+  project: default
+  source:
+    repoURL: 'https://github.com/kostis-codefresh/summer-of-k8s-app-manifests
+    path: ./
+    targetRevision: HEAD
+    
+    helm install release_name and name_of_chart_you_want_to_install
+helm list
+helm history release_name
+helm rollback release_name revision_id
+helm upgrade release_name chart_name
+
+kustomize build name_of_application
+kustomize build name_of_application | kubectl apply -k or --kustomize
+kubectl create ns kustomize
+argocd app create name_of_application --repo repo_url --revision kustomize --path path_for_your_kustomize_files --dest-server server-url --dest-namespace kustomize
+argocd app sync application_name
+argocd app get application_name
+
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: success-rate
+    interval: 2m
+    count: 2
+    # NOTE: prometheus queries return results in the form of a vector.
+    # So it is common to access the index 0 of the returned array to obtain the value
+    successCondition: result[0] >= 0.95
+    provider:
+      prometheus:
+        address: http://prom-release-prometheus-server.prom.svc.cluster.local:80
+        query: sum(response_status{app="{{args.service-name}}",role="canary",status=~"2.*"})/sum(response_status{app="{{args.service-name}}",role="canary"}
+        
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: canary-demo
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: demo
+  project: default
+  source:
+    repoURL: 'https://github.com/kostis-codefresh/summer-of-k8s-app-manifests'
+    path: ./
+    targetRevision: HEAD
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
